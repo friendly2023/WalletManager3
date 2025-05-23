@@ -49,6 +49,12 @@ public class WalletService {
         walletRepository.save(walletForChanges);
     }
 
+    public void deleteWalletByWalletId(String walletId) {
+
+        getWalletByWalletId(walletId);
+        walletRepository.deleteById(UUID.fromString(walletId));
+    }
+
     private void checkingOperation(BigDecimal newBalance, UUID walletId) {
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("На кошельке '" + walletId + "' недостаточно средств");
