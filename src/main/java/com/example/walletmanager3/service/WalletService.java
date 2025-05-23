@@ -5,6 +5,8 @@ import com.example.walletmanager3.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class WalletService {
 
@@ -17,5 +19,10 @@ public class WalletService {
     public void createNewWallet() {
 
         walletRepository.save(new Wallet());
+    }
+
+    public Wallet getWalletByWalletId(String walletId) {
+
+        return walletRepository.getWalletByUUID(UUID.fromString(walletId));
     }
 }
