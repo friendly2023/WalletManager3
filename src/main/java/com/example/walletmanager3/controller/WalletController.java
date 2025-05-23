@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,9 @@ public class WalletController {
     }
 
     @GetMapping(value = "/wallets/{walletId}")
-    public Wallet getWalletByWalletId(@PathVariable @Pattern(regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}") String walletId) {
+    public Wallet getWalletByWalletId(@PathVariable @Pattern
+            (regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
+                                      String walletId) {
 
         return walletService.getWalletByWalletId(walletId);
     }
@@ -40,5 +43,13 @@ public class WalletController {
     public void updateWalletBalance(@Valid @RequestBody WalletRequestDto walletRequestDto) {
 
         walletService.updateWalletBalance(walletRequestDto);
+    }
+
+    @DeleteMapping(value = "wallets/del_{walletId}")
+    public void deleteWalletByWalletId(@PathVariable @Pattern
+            (regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
+                                       String walletId) {
+
+        walletService.deleteWalletByWalletId(walletId);
     }
 }
