@@ -2,6 +2,7 @@ package com.example.walletmanager3.exception;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,14 +33,26 @@ public class ErrorHandlingControllerAdvice {
     }
 
     @ResponseBody
-    @ExceptionHandler(WalletNotFoundException.class)
+    @ExceptionHandler({WalletNotFoundException.class, IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ValidationErrorResponse handleWalletNotFound(
-            WalletNotFoundException e
+            RuntimeException  e
     ) {
         final List<Violation> violations = Collections.singletonList(
                 new Violation("walletId", e.getMessage())
         );
+        return new ValidationErrorResponse(violations);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ValidationErrorResponse onMethodArgumentNotValidException(
+            MethodArgumentNotValidException e
+    ) {
+        final List<Violation> violations = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> new Violation(error.getField(), error.getDefaultMessage()))
+                .collect(Collectors.toList());
         return new ValidationErrorResponse(violations);
     }
 }
