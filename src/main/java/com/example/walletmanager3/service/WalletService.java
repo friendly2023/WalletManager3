@@ -4,6 +4,7 @@ import com.example.walletmanager3.dto.WalletRequestDto;
 import com.example.walletmanager3.entity.Wallet;
 import com.example.walletmanager3.enums.OperationType;
 import com.example.walletmanager3.repository.WalletRepository;
+import com.example.walletmanager3.repository.WalletTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,22 @@ public class WalletService {
     private WalletRepository walletRepository;
     @Autowired
     private WalletTransactionService walletTransactionService;
+    @Autowired
+    private WalletTransactionRepository walletTransactionRepository;
 
     public WalletService() {
     }
 
     public void createNewWallet() {
 
-        walletRepository.save(new Wallet());
+        Wallet wallet;
+
+        do {
+            wallet = new Wallet();
+        } while (walletRepository.existsById(wallet.getWalletId())
+                || walletTransactionRepository.existsByWalletId(wallet.getWalletId()));
+
+        walletRepository.save(wallet);
     }
 
     public Wallet getWalletByWalletId(String walletId) {
