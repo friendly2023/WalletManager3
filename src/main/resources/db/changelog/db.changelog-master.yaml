@@ -1,22 +1,5 @@
 databaseChangeLog:
-  - changeSet:
-      id: 1
-      author: I
-      changes:
-        - createTable:
-            tableName: wallet
-            columns:
-              - column:
-                  name: wallet_id
-                  type: uuid
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-
-              - column:
-                  name: balance
-                  type: numeric(19,2)
-                  constraints:
-                    nullable: false
+  - include:
+      file: db/changelog/db.changelog-wallet_001.yaml
   - include:
       file: db/changelog/db.changelog-wallet_transaction_001.yaml
