@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: wallet_transaction_001
+      author: I
+      changes:
+        - createTable:
+            tableName: wallet_transaction
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: time
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: wallet_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: operation_type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: amount
+                  type: numeric(19,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: balance_after
+                  type: numeric(19,2)
+                  constraints:
+                    nullable: false

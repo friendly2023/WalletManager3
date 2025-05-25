@@ -18,3 +18,5 @@ databaseChangeLog:
                   type: numeric(19,2)
                   constraints:
                     nullable: false
+  - include:
+      file: db/changelog/db.changelog-wallet_transaction_001.yaml
