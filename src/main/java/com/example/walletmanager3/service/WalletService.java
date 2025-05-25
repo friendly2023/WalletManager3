@@ -15,6 +15,8 @@ public class WalletService {
 
     @Autowired
     private WalletRepository walletRepository;
+    @Autowired
+    private WalletTransactionService walletTransactionService;
 
     public WalletService() {
     }
@@ -46,6 +48,13 @@ public class WalletService {
         }
 
         walletForChanges.setBalance(newBalance);
+
+        walletTransactionService.recordWalletTransaction(
+                walletForChanges.getWalletId(),
+                type,
+                walletRequestDto.amount(),
+                newBalance);
+
         walletRepository.save(walletForChanges);
     }
 
