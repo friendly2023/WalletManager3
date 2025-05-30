@@ -41,7 +41,6 @@ public class WalletController {
             (regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
                                       String walletId) {
 
-
         log.info("Получен запрос на предоставление кошелька");
         log.debug("ID кошелька: {}", walletId);
 
@@ -65,6 +64,8 @@ public class WalletController {
             (regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
                                        String walletId) {
 
+        log.info("Получен запрос на удаление кошелька");
         walletService.deleteWalletByWalletId(walletId);
+        log.info("Кошелек удален");
     }
 }

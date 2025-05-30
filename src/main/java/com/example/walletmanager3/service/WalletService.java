@@ -90,8 +90,10 @@ public class WalletService {
 
     public void deleteWalletByWalletId(String walletId) {
 
+        log.info("Начат процесс удаления кошелька");
         getWalletByWalletId(walletId);
         walletRepository.deleteById(UUID.fromString(walletId));
+        log.info("Закончен процесс удаления кошелька");
     }
 
     private void checkingOperation(BigDecimal newBalance, UUID walletId) {
