@@ -55,7 +55,10 @@ public class WalletController {
     public void updateWalletBalance(@Valid @RequestBody WalletRequestDto walletRequestDto) {
 
         log.info("Получен запрос на изменение баланса кошелька");
+        log.debug("{}", walletRequestDto);
+
         walletService.updateWalletBalance(walletRequestDto);
+
         log.info("Выполнен запрос на изменение баланса кошелька");
     }
 
@@ -65,7 +68,10 @@ public class WalletController {
                                        String walletId) {
 
         log.info("Получен запрос на удаление кошелька");
+        log.debug("ID кошелька: {}", walletId);
+
         walletService.deleteWalletByWalletId(walletId);
+
         log.info("Кошелек удален");
     }
 }

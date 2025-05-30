@@ -74,6 +74,8 @@ public class WalletService {
             newBalance = (walletForChanges.getBalance()).subtract(walletRequestDto.amount());
 
             checkingOperation(newBalance, walletForChanges.getWalletId());
+            log.debug("Новый баланс: {}", newBalance);
+            log.debug("Средств для проведения операции достаточно");
         }
 
         walletForChanges.setBalance(newBalance);
