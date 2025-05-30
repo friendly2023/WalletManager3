@@ -55,7 +55,9 @@ public class WalletController {
     @PostMapping(value = "/wallet")
     public void updateWalletBalance(@Valid @RequestBody WalletRequestDto walletRequestDto) {
 
+        log.info("Получен запрос на изменение баланса кошелька");
         walletService.updateWalletBalance(walletRequestDto);
+        log.info("Выполнен запрос на изменение баланса кошелька");
     }
 
     @DeleteMapping(value = "/wallets/del_{walletId}")

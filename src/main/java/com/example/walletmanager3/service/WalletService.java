@@ -61,6 +61,7 @@ public class WalletService {
 
     public void updateWalletBalance(WalletRequestDto walletRequestDto) {
 
+        log.info("Начат процесс изменения баланса кошелька");
         Wallet walletForChanges = getWalletByWalletId(walletRequestDto.walletId());
 
         BigDecimal newBalance;
@@ -84,6 +85,7 @@ public class WalletService {
                 newBalance);
 
         walletRepository.save(walletForChanges);
+        log.info("Завершен процесс изменения баланса кошелька");
     }
 
     public void deleteWalletByWalletId(String walletId) {
