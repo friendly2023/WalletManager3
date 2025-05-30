@@ -5,6 +5,8 @@ import com.example.walletmanager3.entity.Wallet;
 import com.example.walletmanager3.enums.OperationType;
 import com.example.walletmanager3.repository.WalletRepository;
 import com.example.walletmanager3.repository.WalletTransactionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,7 @@ import java.util.UUID;
 
 @Service
 public class WalletService {
-
+    private static final Logger log = LoggerFactory.getLogger(WalletService.class);
     @Autowired
     private WalletRepository walletRepository;
     @Autowired
@@ -26,14 +28,24 @@ public class WalletService {
 
     public void createNewWallet() {
 
+        log.debug("Начат процесс создания кошелька");
+
         Wallet wallet;
+        int attempts = 0;
 
         do {
             wallet = new Wallet();
+
+            attempts++;
+            log.debug("Сгенерирован кошелек с ID: {}", wallet.getWalletId());
         } while (walletRepository.existsById(wallet.getWalletId())
                 || walletTransactionRepository.existsByWalletId(wallet.getWalletId()));
 
+        log.debug("Уникальный ID кошелька найден после {} попыток: {}", attempts, wallet.getWalletId());
+
         walletRepository.save(wallet);
+
+        log.info("Новый кошелек успешно сохранен с ID: {}", wallet.getWalletId());
     }
 
     public Wallet getWalletByWalletId(String walletId) {
