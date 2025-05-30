@@ -50,7 +50,13 @@ public class WalletService {
 
     public Wallet getWalletByWalletId(String walletId) {
 
-        return walletRepository.getWalletByUUID(UUID.fromString(walletId));
+        log.info("Отправлен запрос в DB на получение кошелька");
+
+        Wallet wallet = walletRepository.getWalletByUUID(UUID.fromString(walletId));
+
+        log.info("Выполнен запрос в DB на получение кошелька");
+
+        return wallet;
     }
 
     public void updateWalletBalance(WalletRequestDto walletRequestDto) {

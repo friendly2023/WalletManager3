@@ -41,7 +41,15 @@ public class WalletController {
             (regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
                                       String walletId) {
 
-        return walletService.getWalletByWalletId(walletId);
+
+        log.info("Получен запрос на предоставление кошелька");
+        log.debug("ID кошелька: {}", walletId);
+
+        Wallet wallet = walletService.getWalletByWalletId(walletId);
+
+        log.info("Выполнен запрос на предоставление кошелька");
+
+        return wallet;
     }
 
     @PostMapping(value = "/wallet")
