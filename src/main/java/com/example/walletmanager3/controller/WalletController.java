@@ -63,7 +63,7 @@ public class WalletController {
         log.info("Выполнен запрос на изменение баланса кошелька");
     }
 
-    @DeleteMapping(value = "/wallets/del_{walletId}")
+    @DeleteMapping(value = "/wallets/{walletId}/delete")
     public void deleteWalletByWalletId(@PathVariable @Pattern
             (regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
                                        String walletId) {
