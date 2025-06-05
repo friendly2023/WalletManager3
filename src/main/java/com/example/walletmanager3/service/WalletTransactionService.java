@@ -1,16 +1,19 @@
 package com.example.walletmanager3.service;
 
 import com.example.walletmanager3.entity.WalletTransaction;
-import com.example.walletmanager3.enums.OperationType;
 import com.example.walletmanager3.repository.WalletTransactionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
 public class WalletTransactionService {
+    private static final Logger log = LoggerFactory.getLogger(WalletTransactionService.class);
 
     @Autowired
     private WalletTransactionRepository walletTransactionRepository;
@@ -18,31 +21,20 @@ public class WalletTransactionService {
     public WalletTransactionService() {
     }
 
-    public void recordWalletTransaction(UUID walletId,
-                                        OperationType operationType,
-                                        BigDecimal amount,
-                                        BigDecimal balanceAfter) {
+    public Page<WalletTransaction> getWalletTransactionHistory(String walletId, Integer page, Integer size) {
+        log.info("Отправлен запрос в БД на получение истории транзакций");
 
-        WalletTransaction walletTransaction = buildWalletTransaction(
-                walletId,
-                operationType,
-                amount,
-                balanceAfter);
 
-        walletTransactionRepository.save(walletTransaction);
-    }
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<WalletTransaction> walletTransactionPage = walletTransactionRepository.findByWalletId(
+                UUID.fromString(walletId),
+                pageRequest);
 
-    private WalletTransaction buildWalletTransaction(UUID walletId,
-                                                     OperationType operationType,
-                                                     BigDecimal amount,
-                                                     BigDecimal balanceAfter) {
+        log.debug("Получено {} транзакций, всего страниц: {}",
+                walletTransactionPage.getNumberOfElements(),
+                walletTransactionPage.getTotalPages());
+        log.info("Выполнен запрос в БД на получение истории транзакций");
 
-        WalletTransaction walletTransaction = new WalletTransaction();
-        walletTransaction.setWalletId(walletId);
-        walletTransaction.setOperationType(operationType);
-        walletTransaction.setAmount(amount);
-        walletTransaction.setBalanceAfter(balanceAfter);
-
-        return walletTransaction;
+        return walletTransactionPage;
     }
 }

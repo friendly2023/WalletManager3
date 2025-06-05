@@ -19,7 +19,7 @@ public class WalletService {
     @Autowired
     private WalletRepository walletRepository;
     @Autowired
-    private WalletTransactionService walletTransactionService;
+    private WalletTransactionFactory walletTransactionFactory;
     @Autowired
     private WalletTransactionRepository walletTransactionRepository;
 
@@ -80,7 +80,7 @@ public class WalletService {
 
         walletForChanges.setBalance(newBalance);
 
-        walletTransactionService.recordWalletTransaction(
+        walletTransactionFactory.recordWalletTransaction(
                 walletForChanges.getWalletId(),
                 type,
                 walletRequestDto.amount(),
