@@ -5,6 +5,7 @@ import com.example.walletmanager3.entity.Wallet;
 import com.example.walletmanager3.enums.OperationType;
 import com.example.walletmanager3.repository.WalletRepository;
 import com.example.walletmanager3.repository.WalletTransactionRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,7 @@ public class WalletService {
         return wallet;
     }
 
+    @Transactional
     public void updateWalletBalance(WalletRequestDto walletRequestDto) {
 
         log.info("Начат процесс изменения баланса кошелька");
