@@ -16,6 +16,7 @@ import java.util.UUID;
 @Service
 public class WalletService {
     private static final Logger log = LoggerFactory.getLogger(WalletService.class);
+    private static final BigDecimal maxBalance = BigDecimal.TEN.pow(17);
     @Autowired
     private WalletRepository walletRepository;
     @Autowired
@@ -70,12 +71,11 @@ public class WalletService {
 
         if (type == OperationType.DEPOSIT) {
             newBalance = (walletForChanges.getBalance()).add(walletRequestDto.amount());
+            validateNewBalance(newBalance, walletForChanges.getWalletId());
+
         } else {
             newBalance = (walletForChanges.getBalance()).subtract(walletRequestDto.amount());
-
-            checkingOperation(newBalance, walletForChanges.getWalletId());
-            log.debug("Новый баланс: {}", newBalance);
-            log.debug("Средств для проведения операции достаточно");
+            validateNewBalance(newBalance, walletForChanges.getWalletId());
         }
 
         walletForChanges.setBalance(newBalance);
@@ -98,9 +98,18 @@ public class WalletService {
         log.info("Закончен процесс удаления кошелька");
     }
 
-    private void checkingOperation(BigDecimal newBalance, UUID walletId) {
+    private void validateNewBalance(BigDecimal newBalance, UUID walletId) {
+
+        log.debug("Запущена проверка баланса кошелька");
+        log.debug("Баланс для валидации: {}", newBalance);
+
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("На кошельке '" + walletId + "' недостаточно средств");
         }
+        if (newBalance.compareTo(maxBalance) > 0) {
+            throw new IllegalArgumentException("Баланс кошелька '" + walletId + "' превышает максимально допустимое значение");
+        }
+
+        log.debug("Валидация нового баланса успешно пройдена");
     }
 }
